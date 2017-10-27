@@ -1,0 +1,28 @@
+upstream {{app_name}} {
+    server unix://{{app_path}}{{app_name}}.sock;
+}
+server {
+    listen       80;
+    server_name  {{ app_url }};
+    charset     utf-8;
+    client_max_body_size 75M;
+    error_log {{nginx_error_log}};
+    location / {
+        uwsgi_pass  {{app_name}};
+        include     uwsgi_params;
+    }
+    location /static {
+        alias {{app_path}}{{app_name}}/static;
+        expires 365d;
+    }
+
+    location /media {
+        alias {{app_path}}{{app_name}}/media;
+        expires 365d;
+    }
+    location /player/private/media/ {
+       alias {{app_path}}{{app_name}}/media/;
+    }
+location /robots.txt { root {{app_path}}{{app_name}}/static/; }
+location /favicon.ico { root {{app_path}}{{app_name}}/static/; }
+}

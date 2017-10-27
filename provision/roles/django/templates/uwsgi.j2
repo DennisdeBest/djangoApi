@@ -1,0 +1,6 @@
+[uwsgi]
+chdir           = {{app_path}}
+wsgi-file       = {{app_name}}/wsgi.py
+processes       = 4
+socket          = {{app_path}}{{app_name}}.sock
+stats           = 127.0.0.1:9191

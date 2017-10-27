@@ -1,0 +1,3 @@
+app_name: api
+app_url: django.api
+app_path: /home/vagrant/project/api/

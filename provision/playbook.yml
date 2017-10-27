@@ -1,0 +1,14 @@
+---
+
+- name: Django API
+  hosts: dev
+
+  roles:
+    - common
+    - mysql
+    - django
+    - nginx
+    - role: gantsign.oh-my-zsh
+      users:
+        - username: vagrant
+...

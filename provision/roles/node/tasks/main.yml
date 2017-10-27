@@ -1,0 +1,14 @@
+---
+- name: cUrl node setup
+  shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+
+- name: Install node
+  apt: name="{{ item }}" state="latest" update_cache=yes
+  become: yes
+  with_items: "{{ packages }}"
+
+- name: Install node packages
+  become: yes
+  npm: name={{ item }} global=yes
+  with_items: "{{ node_packages }}"
+...

@@ -1,0 +1,17 @@
+packages:
+  - nodejs
+  - build-essential
+  - xvfb
+
+node_packages:
+  - phantomjs
+  - nodemon
+  - nightmarejs
+  - sqlite3
+  - sqlite
+  - bluebird
+  - inquirer
+  - commander
+  - jquery
+  - ioredis
+  - mongoose

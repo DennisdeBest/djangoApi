@@ -1,0 +1,93 @@
+---
+- name: install python3-setuptools
+  shell: sudo apt-get -y install python3-setuptools
+  become: yes
+
+- name: install pip
+  shell: sudo easy_install3 pip
+  become: yes
+
+- name: install virtualEnv
+  shell: sudo pip install virtualenv
+  become: yes
+
+- name: create virtualEnv
+  shell: virtualenv -p /usr/bin/python3 "{{ project_path }}"
+
+- name: Install Django
+  become: yes
+  pip: name="{{ item }}"
+  virtualenv: "{{ project_path }}"
+  with_items:
+    - django
+    - uwsgi
+
+- name: install pasenger phusion
+  apt: name="{{ item }}" state="latest" update_cache=yes
+  become: yes
+  with_items: 
+    - dirmngr 
+    - gnupg
+
+- name: Add passenger phusion key
+  become: yes
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 561F9B9CAC40B2F7
+
+- name: install certificates
+  apt: name="{{ item }}" state="latest" update_cache=yes
+  become: yes
+  with_items: 
+    - apt-transport-https
+    - ca-certificates
+
+- name: ADD phusion Passenger repo
+  become: true
+  apt_repository:
+    repo: deb https://oss-binaries.phusionpassenger.com/apt/passenger stretch main
+    state: present
+
+- name: install pasenger phusion
+  apt: name="{{ item }}" state="latest" update_cache=yes
+  become: yes
+  with_items: 
+    - passenger
+
+- name: Validate passenger phusion install
+  become: yes
+  shell: /usr/bin/passenger-config validate-install
+#  become: yes
+#  apt: name=supervisor state=present force=yes
+
+#- name: Create UWSGI vassals directory
+#  file: "path=/etc/uwsgi/vassals  state=directory"
+
+#- name: setup uwsgi in supervisor
+#  template: "src=uwsgi_server.j2 dest={{supervisor_conf_dir}}/uwsgi-runner.conf"
+
+#- name: update supervisor
+#  supervisorctl: name=uwsgi-runner state=restarted
+
+- name: setup project uwsgi configuration file
+  template: "src=uwsgi.j2 dest={{app_path}}{{app_name}}_uwsgi.ini"
+
+- name: run uwsgi
+  shell: uwsgi "{{ app_path }}{{app_name}}_uwsgi.ini"
+  async: 45
+  poll: 0
+
+#- name: create a symlink of uwsgi in vassals
+#  file: "src={{app_path}}{{app_name}}/{{app_name}}_uwsgi.ini dest=/etc/uwsgi/vassals/{{app_name}}_uwsgi.ini state=link"
+
+#- name: touch the symlink file
+#  command: "touch /etc/uwsgi/vassals/{{app_name}}_uwsgi.ini"
+
+#- name: run django server
+#  shell: python manage.py runserver
+#  args:
+#      chdir: "{{ project_path }}/{{ project_name }}"
+
+
+...
+
