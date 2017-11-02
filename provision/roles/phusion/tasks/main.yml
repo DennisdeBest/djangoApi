@@ -1,0 +1,48 @@
+---
+- name: install pasenger phusion
+  apt: name="{{ item }}" state="latest" update_cache=yes
+  become: yes
+  with_items: 
+    - dirmngr 
+    - gnupg
+
+- name: Add passenger phusion key
+  become: yes
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 561F9B9CAC40B2F7
+
+- name: install certificates
+  apt: name="{{ item }}" state="latest" update_cache=yes
+  become: yes
+  with_items: 
+    - apt-transport-https
+    - ca-certificates
+
+- name: ADD phusion Passenger repo
+  become: true
+  apt_repository:
+    repo: deb https://oss-binaries.phusionpassenger.com/apt/passenger stretch main
+    state: present
+
+- name: install passenger phusion
+  apt: name="{{ item }}" state="latest" update_cache=yes
+  become: yes
+  with_items: 
+    -  libnginx-mod-http-passenger
+
+- name: set passenger configuration
+  become: yes
+  template: "src=passenger.j2 dest=/etc/nginx/conf.d/mod-http-passenger.conf"
+
+- name: restart nginx
+  become: yes
+  service: name=nginx state=restarted
+
+- name: Validate passenger phusion install
+  become: yes
+  shell: /usr/bin/passenger-config validate-install
+
+
+...
+
