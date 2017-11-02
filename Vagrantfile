@@ -11,18 +11,20 @@ Vagrant.configure("2") do |config|
 	config.vm.network "private_network", ip: "10.0.0.200"
 	config.vm.hostname = "django.api"
 	config.hostsupdater.aliases = ["django.api"]
+	
 
 	config.vm.synced_folder "project/", "/home/vagrant/project", type: "nfs"
 	config.vm.provider "virtualbox" do |vb|
-    	# Display the VirtualBox GUI when booting the machine
-    	vb.gui = false
+		vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+		# Display the VirtualBox GUI when booting the machine
+		vb.gui = false
 
-    	# Customize the amount of memory on the VM:
-    	vb.memory = "4048"
-    	vb.name = "Django API"
-    	vb.customize ["modifyvm", :id, "--usb", "on"]
-    	vb.customize ["modifyvm", :id, "--usbehci", "off"]
-  	end
+		# Customize the amount of memory on the VM:
+		vb.memory = "4048"
+		vb.name = "Django API"
+		vb.customize ["modifyvm", :id, "--usb", "on"]
+		vb.customize ["modifyvm", :id, "--usbehci", "off"]
+	end
 
   	config.vm.provision "ansible" do |ansible|
     	ansible.playbook = "provision/playbook.yml"
