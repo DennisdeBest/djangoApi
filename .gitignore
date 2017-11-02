@@ -3,3 +3,9 @@
 
 project/lib/
 project/bin/
+
+project/\.idea/
+
+project/api/\.idea/
+
+*.pyc
