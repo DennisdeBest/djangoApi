@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
 	config.vm.network "private_network", ip: "10.0.0.200"
 	config.vm.hostname = "django.api"
 	config.hostsupdater.aliases = ["django.api"]
-	
+	config.vm.synced_folder ".", "/vagrant", disabled: true
 
 	config.vm.synced_folder "project/", "/home/vagrant/project", type: "nfs"
 	config.vm.provider "virtualbox" do |vb|
