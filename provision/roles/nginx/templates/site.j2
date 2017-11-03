@@ -14,6 +14,8 @@ server {
     passenger_startup_file {{app_name}}/wsgi.py;
     passenger_group vagrant;
 
+    passenger_app_env development;
+
     location /static {
         passenger_document_root {{app_path}}{{app_name}}/static;
     }
