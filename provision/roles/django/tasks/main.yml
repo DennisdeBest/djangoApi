@@ -9,8 +9,9 @@
 
 - name: Install Django
   become: yes
-  pip: name="{{ item }}"
-  executable: pip3
+  pip: 
+    name:  "{{ item }}"
+    executable: pip3
   with_items:
     - django
     - djangorestframework
@@ -21,6 +22,14 @@
     path: "{{app_path}}{{app_name}}/static"
     state: directory
     mode: 0755
+
+- name: create folders
+  file:
+    path: "{{app_path}}{{app_name}}/static/admin"
+    state: directory
+    mode: 0755
+
+
 
 - name: create folders
   file:
