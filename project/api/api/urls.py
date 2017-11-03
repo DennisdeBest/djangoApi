@@ -17,9 +17,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from .views import hello_world
+from rest_framework.authtoken import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^auth/', views.obtain_auth_token),
     url(r'^$', hello_world),
 ]
