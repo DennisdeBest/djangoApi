@@ -7,19 +7,13 @@
   shell: sudo easy_install3 pip
   become: yes
 
-- name: install virtualEnv
-  shell: sudo pip install virtualenv
-  become: yes
-
-- name: create virtualEnv
-  shell: virtualenv -p /usr/bin/python3 "{{ project_path }}"
-
 - name: Install Django
   become: yes
   pip: name="{{ item }}"
-  virtualenv: "{{ project_path }}"
+    executable: pip3
   with_items:
     - django
+    - djangorestframework
 
 - name: create folders
   file:

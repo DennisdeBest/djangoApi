@@ -15,6 +15,7 @@ server {
     passenger_group vagrant;
 
     passenger_app_env development;
+    passenger_python /usr/bin/python3;
 
     location /static {
         passenger_document_root {{app_path}}{{app_name}}/static;
