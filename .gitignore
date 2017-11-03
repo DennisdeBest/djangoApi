@@ -8,4 +8,8 @@ project/\.idea/
 
 project/api/\.idea/
 
+project/api/static/admin/*
+
+project/api/static/rest_framework/*
+
 *.pyc

@@ -10,10 +10,11 @@
 - name: Install Django
   become: yes
   pip: name="{{ item }}"
-    executable: pip3
+  executable: pip3
   with_items:
     - django
     - djangorestframework
+    - PyMySQL
 
 - name: create folders
   file:
