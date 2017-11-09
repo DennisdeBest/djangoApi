@@ -5,9 +5,6 @@ from ShareTheMatch.serializers import UserSerializer
 from django.contrib.auth.models import User
 
 class UserCreate(APIView):
-    """
-    Creates the user.
-    """
 
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)

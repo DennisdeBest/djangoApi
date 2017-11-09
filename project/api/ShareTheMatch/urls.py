@@ -1,6 +1,6 @@
 from django.conf.urls import url
-from . import views
+from .views import user
 
 urlpatterns = [
-    url(r'users/$', views.UserCreate.as_view(), name='ShareTheMatch-create'),
+    url(r'users/$', user.UserCreate.as_view(), name='ShareTheMatch-create'),
 ]
