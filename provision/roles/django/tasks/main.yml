@@ -36,6 +36,15 @@
 - name: create folders
   become: yes
   file:
+    path: "{{app_path}}{{app_name}}/static/admin"
+    state: directory
+    mode: 0755
+
+
+
+- name: create folders
+  become: yes
+  file:
     path: "{{app_path}}{{app_name}}/media"
     state: directory
     mode: 0755
