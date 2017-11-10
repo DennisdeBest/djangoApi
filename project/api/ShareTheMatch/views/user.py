@@ -1,11 +1,30 @@
-from rest_framework.views import APIView
+from rest_framework.views import (
+    APIView
+    )
 from rest_framework.response import Response
 from rest_framework import status
 from ShareTheMatch.serializers.user import UserSerializer
 from django.contrib.auth.models import User
 
+class UserList(APIView):
+    def get(self, request, format=None):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
-class STMUser(APIView):
+class UserDetail(APIView):
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
 
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)
@@ -14,11 +33,15 @@ class STMUser(APIView):
             if user:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete(self, request, pk):
-        user = request.user
-        if not user.is_authenticated:
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        from rest_framework.generics import get_object_or_404
-        user = get_object_or_404(User, pk=pk, user=user)
+    def put(self, request, pk, format='json'):
+        user = self.get_object(pk)
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        user = self.get_object(pk)
         user.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
