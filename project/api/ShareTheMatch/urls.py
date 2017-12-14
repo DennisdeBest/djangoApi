@@ -1,8 +1,7 @@
-from django.conf.urls import url
 from .views import user
+from rest_framework import routers
 
-urlpatterns = [
-    url(r'users/$', user.UserList.as_view(), name='user-list'),
-    url(r'users/$', user.UserDetail.as_view(), name='user-create'),
-    url(r'users/(?P<pk>[0-9]+)/', user.UserDetail.as_view(), name='user-update'),
-]
+router = routers.SimpleRouter(trailing_slash = False)
+
+router.register(r'users', user.UserViewSet)
+urlpatterns = router.urls
