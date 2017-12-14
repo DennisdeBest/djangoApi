@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from ..serializers import AdressSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
-    adresses = serializers.StringRelatedField(many=True)
+    adresses = AdressSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
