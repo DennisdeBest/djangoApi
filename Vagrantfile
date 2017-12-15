@@ -13,9 +13,10 @@ Vagrant.configure("2") do |config|
 	config.hostsupdater.aliases = ["django.api"]
 	config.vm.synced_folder ".", "/vagrant", disabled: true
 
-	config.vm.synced_folder "project/", "/home/vagrant/project", type: "nfs"
+	config.vm.synced_folder "project/", "/home/vagrant/project", type: "nfs",
+		mount_options: %w{nolock,vers=3,udp,noatime,actimeo=1}
 	config.vm.provider "virtualbox" do |vb|
-		vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+	vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
 		# Display the VirtualBox GUI when booting the machine
 		vb.gui = false
 
