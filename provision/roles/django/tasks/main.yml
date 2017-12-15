@@ -17,6 +17,7 @@
     - djangorestframework
     - PyMySQL
     - django-rest-swagger
+    - drf-nested-routers
 
 - name: create folders
   become: yes
