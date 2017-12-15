@@ -139,3 +139,9 @@ USE_TZ = True
 STATIC_URL = '/api/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+SWAGGER_SETTINGS = {
+    'OPERATIONS_SORTER': 'alpha',
+    'JSON_EDITOR': True,
+    'VALIDATOR_URL': False
+}
