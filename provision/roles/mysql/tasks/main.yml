@@ -15,14 +15,23 @@
     - mysql-server
     - mysql-client
     - default-libmysqlclient-dev
+    - python-setuptools
+    - python-dev
+    - python3-dev
+    - build-essential
+    - gcc
 
 - name: Install pip
   become: yes
   apt: name=python-pip state=latest update_cache=yes state=present force=yes
 
+- name: Install the Python Wheel
+  become: yes
+  pip: name=wheel
+
 - name: Install the Python MySQLB module
   become: yes
-  pip: name=MySQL-python
+  pip: name=mysqlclient
 
 - name: create exploit user
   become: yes
