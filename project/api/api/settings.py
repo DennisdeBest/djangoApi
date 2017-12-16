@@ -24,7 +24,7 @@ SECRET_KEY = 'k(%f5@#i8ed@i9r!#6c51_848e=rs*s1ywf^(mkp-k9tll0)@('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django.api', '10.0.0.1', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['django.api', '10.0.0.1', 'localhost', '127.0.0.1', 'api.sharethematch.fr']
 
 # Application definition
 
