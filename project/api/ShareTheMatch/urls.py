@@ -28,4 +28,4 @@ adresses_router.register(r'stuffs', stuff.StuffViewSet, base_name='adress-stuffs
 urlpatterns = router.urls + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += [ url(r'^$', schema_view) ]
 urlpatterns += [ url(r'^', include(adresses_router.urls)) ]
-urlpatterns += [ url(r'^auth/', AuthTokenView.as_view())]
+urlpatterns += [ url(r'^auth-token/', AuthTokenView.as_view())]
