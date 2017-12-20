@@ -1,4 +1,4 @@
-from .views import profile, user, adress, stuff, meetup, sport
+from .views import profile, user, adress, stuff, meetup, sport, users_meetups
 from rest_framework_nested import routers
 from django.conf.urls.static import static
 from django.conf import settings
@@ -19,6 +19,7 @@ router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'users', user.UserViewSet)
 router.register(r'adresses', adress.AdressViewSet)
 router.register(r'meetups', meetup.MeetupViewSet)
+router.register(r'users-meetups', users_meetups.UsersMeetupsViewSet)
 
 adresses_router = routers.NestedSimpleRouter(router, r'adresses', lookup='adress')
 adresses_router.register(r'stuffs', stuff.StuffViewSet, base_name='adress-stuffs')
