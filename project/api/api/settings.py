@@ -24,7 +24,7 @@ SECRET_KEY = 'k(%f5@#i8ed@i9r!#6c51_848e=rs*s1ywf^(mkp-k9tll0)@('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django.api', '10.0.0.1', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['django.api', '10.0.0.1', 'localhost', '127.0.0.1', 'api.sharethematch.fr']
 
 # Application definition
 
@@ -39,9 +39,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'ShareTheMatch.apps.SharethematchConfig',
     'rest_framework_swagger',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'api.urls'
 
@@ -70,11 +74,18 @@ TEMPLATES = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.permissions.AllowAny',
-    )
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.JSONParser',
+    ],
+    'CORS_ALLOW_ORIGIN': True
 }
 
 WSGI_APPLICATION = 'api.wsgi.application'
@@ -84,16 +95,21 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
-        'USER': 'exploit',
-        'PASSWORD': 'exploit',
-        'HOST': '127.0.0.1',
-        'PORT': '',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': 'stm',
     }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'django',
+    #     'USER': 'exploit',
+    #     'PASSWORD': 'exploit',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': '',
+    #     'OPTIONS': {
+    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+    #     },
+    # }
 }
 
 # Password validation
@@ -143,5 +159,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 SWAGGER_SETTINGS = {
     'OPERATIONS_SORTER': 'alpha',
     'JSON_EDITOR': True,
-    'VALIDATOR_URL': False
+    'VALIDATOR_URL': False,
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+    'EXCLUDED_URL_NAMES' : [ 'auth/', ]
 }

@@ -5,6 +5,12 @@ from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls import include
 from rest_framework_swagger.views import get_swagger_view
+from rest_framework.generics import GenericAPIView
+from rest_framework.authtoken.views import ObtainAuthToken
+
+#Hack to get fields in swagger view
+class AuthTokenView(ObtainAuthToken, GenericAPIView):
+    pass
 
 schema_view = get_swagger_view(title='Share The Match')
 
@@ -24,3 +30,4 @@ urlpatterns = router.urls + static(settings.STATIC_URL, document_root=settings.S
 urlpatterns += [ url(r'^$', schema_view) ]
 urlpatterns += [ url(r'^', include(adresses_router.urls)) ]
 urlpatterns += [ url(r'^', include(meetups_router.urls)) ]
+urlpatterns += [ url(r'^auth-token/', AuthTokenView.as_view())]
