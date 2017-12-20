@@ -75,7 +75,12 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-    )
+    ),
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.JSONParser',
+    ]
 }
 
 WSGI_APPLICATION = 'api.wsgi.application'
@@ -149,5 +154,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 SWAGGER_SETTINGS = {
     'OPERATIONS_SORTER': 'alpha',
     'JSON_EDITOR': True,
-    'VALIDATOR_URL': False
+    'VALIDATOR_URL': False,
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
 }
