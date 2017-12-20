@@ -7,9 +7,15 @@ from django.conf.urls import include
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.generics import GenericAPIView
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
 #Hack to get fields in swagger view
 class AuthTokenView(ObtainAuthToken, GenericAPIView):
+    def post(self, request, *args, **kwargs):
+          response = super(AuthTokenView, self).post(request, *args, **kwargs)
+          token = Token.objects.get(key=response.data['token'])
+          return Response({'token': token.key, 'id': token.user_id})
     pass
 
 schema_view = get_swagger_view(title='Share The Match')
