@@ -10,4 +10,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        if self.request.user.is_staff:
+            return User.objects.all()
+        return User.objects.filter(id=user.id)
+
 
