@@ -18,7 +18,7 @@ class AllowPostAny(permissions.BasePermission):
     """
     def has_object_permission(self, request, view, obj):
         # Permissions are only allowed to the owner of the snippet
-        if request.method == 'POST':
+        if request.method == 'POST' or request.method == 'PUT' or request.method == 'GET' or request.method == 'PATCH' :
             return True
         else:
             return False
