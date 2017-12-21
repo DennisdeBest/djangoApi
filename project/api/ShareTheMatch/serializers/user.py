@@ -7,6 +7,9 @@ from django.contrib.auth.hashers import make_password
 class UserSerializer(serializers.ModelSerializer):
     adresses = AdressSerializer(many=True, read_only=True)
     meetups = MeetupSerializer(many=True, read_only=True)
+    first_name = serializers.CharField(required=False, allow_blank=True, max_length=100)
+    last_name = serializers.CharField(required=False, allow_blank=True, max_length=100)
+
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email', 'adresses', 'meetups')
@@ -16,7 +19,9 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             email=validated_data['email'],
             username=validated_data['username'],
-            password=make_password(validated_data['password'])
+            password=make_password(validated_data['password']),
+            last_name=validated_data['last_name'],
+            first_name=validated_data['first_name'],
         )
         user.save()
         return user
